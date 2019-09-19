@@ -1,5 +1,10 @@
 # VolatileEssentials
 
+A simple plugin that alters the Essentials user persistence system.
+
+Currently supported modes:
+- MongoDB backend
+
 ### Requirements
 - Spigot/Paper 1.12.2+
 - EssentialsX 2.17.1+
