@@ -1,0 +1,1 @@
+Due to compiler limitations the modifier class is located in the com.earth2me.essentials package!

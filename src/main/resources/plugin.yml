@@ -1,0 +1,5 @@
+name: VolatileEssentials
+version: ${project.version}
+main: it.feargames.volatileessentials.VolatileEssentials
+authors: [sgdc3]
+description: ${project.description}
