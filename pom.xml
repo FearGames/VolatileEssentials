@@ -41,6 +41,26 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.bson</pattern>
+                                    <shadedPattern>it.feargames.volatileessentials.shaded.org.bson</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>me.yamakaja.runtimetransformer</pattern>
+                                    <shadedPattern>it.feargames.volatileessentials.shaded.me.yamakaja.runtimetransformer</shadedPattern>
+                                    <excludes>
+                                        <exclude>me.yamakaja.runtimetransformer.agent.*</exclude>
+                                        <exclude>me.yamakaja.runtimetransformer.annotation.*</exclude>
+                                        <exclude>me.yamakaja.runtimetransformer.transform.*</exclude>
+                                        <exclude>me.yamakaja.runtimetransformer.util.*</exclude>
+                                    </excludes>
+                                </relocation>
+                                <relocation>
+                                    <pattern>me.mongodb</pattern>
+                                    <shadedPattern>it.feargames.volatileessentials.shaded.me.mongodb</shadedPattern>
+                                </relocation>
+                            </relocations>
                         </configuration>
                     </execution>
                 </executions>
