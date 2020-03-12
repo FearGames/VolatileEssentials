@@ -3,3 +3,6 @@ version: ${project.version}
 main: it.feargames.volatileessentials.VolatileEssentials
 authors: [sgdc3]
 description: ${project.description}
+api-version: 1.13
+depend:
+  - Essentials
