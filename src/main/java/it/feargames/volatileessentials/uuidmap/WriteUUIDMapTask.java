@@ -22,6 +22,9 @@ public class WriteUUIDMapTask implements Runnable {
 
     @Override
     public void run() {
+        if(VolatileEssentials.getInstance().getDatabase() == null) {
+            return;
+        }
         if (UUIDMapStaticStore.UUID_MAP_PENDING_WRITE) {
             VolatileEssentials.logger().info("Writing uuid map to the database!");
             try {

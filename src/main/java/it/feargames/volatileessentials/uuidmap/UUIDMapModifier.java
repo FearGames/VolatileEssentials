@@ -69,28 +69,31 @@ public abstract class UUIDMapModifier extends UUIDMap {
 
             names.clear();
             history.clear();
-            UUIDMapStaticStore.UUID_MAP_LOADING = true;
 
-            MongoCollection<Document> collection = VolatileEssentials.getInstance().getDatabase().getCollection("uuids");
-            collection.find().forEach(new Consumer<Document>() {
-                @Override
-                public void accept(Document document) {
-                    String name = document.getString("_id");
-                    UUID uuid = UUID.fromString(document.getString("uuid"));
-                    names.put(name, uuid);
-                    if (!history.containsKey(uuid)) {
-                        final ArrayList<String> list = new ArrayList<>();
-                        list.add(name);
-                        history.put(uuid, list);
-                    } else {
-                        final ArrayList<String> list = history.get(uuid);
-                        if (!list.contains(name)) {
+            if(VolatileEssentials.getInstance().getDatabase() != null) {
+                UUIDMapStaticStore.UUID_MAP_LOADING = true;
+
+                MongoCollection<Document> collection = VolatileEssentials.getInstance().getDatabase().getCollection("uuids");
+                collection.find().forEach(new Consumer<Document>() {
+                    @Override
+                    public void accept(Document document) {
+                        String name = document.getString("_id");
+                        UUID uuid = UUID.fromString(document.getString("uuid"));
+                        names.put(name, uuid);
+                        if (!history.containsKey(uuid)) {
+                            final ArrayList<String> list = new ArrayList<>();
                             list.add(name);
+                            history.put(uuid, list);
+                        } else {
+                            final ArrayList<String> list = history.get(uuid);
+                            if (!list.contains(name)) {
+                                list.add(name);
+                            }
                         }
                     }
-                }
-            });
-            UUIDMapStaticStore.UUID_MAP_LOADING = false;
+                });
+                UUIDMapStaticStore.UUID_MAP_LOADING = false;
+            }
         } catch (Exception ex) {
             Bukkit.getLogger().log(Level.SEVERE, ex.getMessage(), ex);
         }

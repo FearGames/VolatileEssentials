@@ -38,8 +38,10 @@ public class LoadAllUsersTask implements Runnable {
         synchronized (users) {
             keys.clear();
             users.invalidateAll();
-            MongoCollection<Document> collection = VolatileEssentials.getInstance().getDatabase().getCollection("users");
-            collection.find().forEach((Consumer<Document>) document -> keys.add(UUID.fromString(document.getString("_id"))));
+            if(VolatileEssentials.getInstance().getDatabase() != null) {
+                MongoCollection<Document> collection = VolatileEssentials.getInstance().getDatabase().getCollection("users");
+                collection.find().forEach((Consumer<Document>) document -> keys.add(UUID.fromString(document.getString("_id"))));
+            }
             uuidMap.loadAllUsers(names, history);
         }
     }

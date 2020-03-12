@@ -80,7 +80,9 @@ public abstract class UserMapModifier extends UserMap {
             new Throwable().printStackTrace();
         }
 
-        if (create || VolatileEssentials.getInstance().getDatabase().getCollection("users").find(Filters.eq("_id", uuid.toString())).first() != null) {
+        if (create
+                || VolatileEssentials.getInstance().getDatabase() == null
+                || VolatileEssentials.getInstance().getDatabase().getCollection("users").find(Filters.eq("_id", uuid.toString())).first() != null) {
             player = new OfflinePlayer(uuid, ess.getServer());
             final User user = new User(player, ess);
             ((OfflinePlayer) player).setName(user.getLastAccountName());

@@ -1,3 +1,5 @@
+# Valid values: none, mongodb
+persistence: none
 mongodb:
   host: localhost
   port: 27017

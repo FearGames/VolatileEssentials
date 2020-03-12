@@ -46,8 +46,10 @@ public final class VolatileEssentials extends JavaPlugin implements Listener {
     public void onEnable() {
         saveDefaultConfig();
 
-        mongoClient = new MongoClient(getConfig().getString("mongodb.host"), getConfig().getInt("mongodb.port"));
-        database = mongoClient.getDatabase(getConfig().getString("mongodb.database"));
+        if(getConfig().getString("persistence").equalsIgnoreCase("mongodb")) {
+            mongoClient = new MongoClient(getConfig().getString("mongodb.host"), getConfig().getInt("mongodb.port"));
+            database = mongoClient.getDatabase(getConfig().getString("mongodb.database"));
+        }
 
         essentials = (Essentials) getServer().getPluginManager().getPlugin("Essentials");
         try {
@@ -61,7 +63,9 @@ public final class VolatileEssentials extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
-        mongoClient.close();
+        if(mongoClient != null) {
+            mongoClient.close();
+        }
     }
 
     /*
@@ -115,8 +119,10 @@ public final class VolatileEssentials extends JavaPlugin implements Listener {
     }
 
     public void saveUserConf(UUID uniqueId, Map<String, Object> values) {
-        MongoCollection<Document> collection = VolatileEssentials.getInstance().getDatabase()
-                .getCollection("users");
+        if(database == null) {
+            return;
+        }
+        MongoCollection<Document> collection = database.getCollection("users");
         Bson filter = Filters.eq("_id", uniqueId.toString());
         Document data = new Document();
         for (Map.Entry<String, Object> entry : values.entrySet()) {
@@ -132,8 +138,10 @@ public final class VolatileEssentials extends JavaPlugin implements Listener {
     }
 
     public void loadUserConf(EssentialsUserConf userConf) {
-        MongoCollection<Document> collection = VolatileEssentials.getInstance().getDatabase()
-                .getCollection("users");
+        if (database == null) {
+            return;
+        }
+        MongoCollection<Document> collection = database.getCollection("users");
         Bson filter = Filters.eq("_id", userConf.uuid.toString());
         Document result = collection.find(filter).first();
         if (result == null) {
