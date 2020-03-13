@@ -61,7 +61,10 @@ public abstract class EssentialsConfModifier extends EssentialsConf {
             new Throwable().printStackTrace();
         }
         try {
-            this.delayedSave(this.configFile).get();
+            Future<?> future = this.delayedSave(this.configFile);
+            if(future != null) {
+                future.get();
+            }
         } catch (ExecutionException | InterruptedException var2) {
             LOGGER.log(Level.SEVERE, var2.getMessage(), var2);
         }
