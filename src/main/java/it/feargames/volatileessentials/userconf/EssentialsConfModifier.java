@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import java.io.File;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -32,6 +33,10 @@ public abstract class EssentialsConfModifier extends EssentialsConf {
     public synchronized void load() {
         Object instance = this;
         if (instance instanceof EssentialsUserConf) {
+            if(VolatileEssentials.getInstance().getDatabase() == null) {
+                // Ignore silently if persistence is disabled
+                return;
+            }
             EssentialsUserConf userConf = (EssentialsUserConf) instance;
             VolatileEssentials.logger().info("Loading '" + userConf.username + "' (" + userConf.uuid + ") from the database!");
             if (this.pendingDiskWrites.get() != 0) {
@@ -66,6 +71,10 @@ public abstract class EssentialsConfModifier extends EssentialsConf {
     private Future<?> delayedSave(File file) {
         Object instance = this;
         if (instance instanceof EssentialsUserConf) {
+            if(VolatileEssentials.getInstance().getDatabase() == null) {
+                // Ignore silently if persistence is disabled
+                return null;
+            }
             EssentialsUserConf userConf = (EssentialsUserConf) instance;
             VolatileEssentials.logger().info("Saving '" + userConf.username + "' (" + userConf.uuid + ") to the database!");
             UUID uniqueId = userConf.uuid;
