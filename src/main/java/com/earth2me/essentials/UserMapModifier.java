@@ -40,7 +40,7 @@ public abstract class UserMapModifier extends UserMap {
     @Override
     @Inject(InjectionType.OVERRIDE)
     public User getUser(final String name) {
-        VolatileEssentials.logger().info("Loading user by name '" + name + "' from database!");
+        //VolatileEssentials.logger().info("Loading user by name '" + name + "' from database!");
         try {
             final String sanitizedName = StringUtil.safeString(name);
             if (names.containsKey(sanitizedName)) {
